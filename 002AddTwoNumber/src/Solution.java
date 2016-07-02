@@ -17,7 +17,7 @@ public class Solution {
         ListNode head = new ListNode(0);
         ListNode curr = head;
 
-        while (l1 != null || l2 != null) {
+        while (p1 != null || p2 != null) {
             int x = (p1 != null) ? p1.val : 0;
             int y = (p2 != null) ? p2.val : 0;
             sum = x + y + carry;
