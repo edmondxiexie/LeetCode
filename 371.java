@@ -7,7 +7,7 @@ public class Solution {
         while (b != 0) {
             int carry = a & b;
             a = a ^ b; // add
-            b = carry << 1; // move carry to next bit
+            b = carry << 1; // move carry to next bit 
         }
         return a;
     }
