@@ -34,6 +34,9 @@ public class Solution {
         ListNode cur = head.next;
         ListNode reversedCur = reverseList(cur);
 
-        
+        head.next = null;
+        cur.next = head;
+
+        return reversedCur;
     }
 }
