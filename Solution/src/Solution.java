@@ -4,6 +4,9 @@ public class Solution {
         // 首行和尾行之间的其他行除了像首位两行一样有间隔距离2*(numRows - 1)的元素，
         // 如，1，7和2，8，在它们之间还有一个元素，该元素到该行下一个元素的距离为2*i，
         // i为所在行数，所以到上一个元素的距离为2*(numRows -1) - 2*i。
+        if (numRows <= 1) {
+            return s;
+        }
 
         StringBuffer result = new StringBuffer();
         
@@ -19,12 +22,11 @@ public class Solution {
                 }
             }
             result.append(subResult.toString());
-            System.out.println(subResult.toString());
         }
         return result.toString();
     }
     
     public static void main(String[] args) {
-        System.out.println(convert("012345678901234", 4));
+        System.out.println(convert("A", 1));
     }
 }
