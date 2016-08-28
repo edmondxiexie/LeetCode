@@ -26,7 +26,29 @@ public class Solution {
         return result.toString();
     }
     
+    public static int reverse(int x) {
+        if (x == 0) {
+            return x;
+        }
+        int result = 0;
+        int absX = Math.abs(x);
+        int sign = x / absX;
+        while (absX > 0) {
+            int temp = result * 10 + absX % 10;
+            if (temp / 10 != result) {
+                // overflow
+                return 0;
+            }
+            absX = absX / 10;
+            result = temp;
+        }
+//        if (result < 0) {
+//            return -1;
+//        }
+        return result * sign;
+    }
+    
     public static void main(String[] args) {
-        System.out.println(convert("A", 1));
+        System.out.println(reverse(1534236469));
     }
 }
