@@ -19,12 +19,7 @@ public class Solution {
                 }
             }
             result.append(subResult.toString());
-            System.out.println(subResult.toString());
         }
         return result.toString();
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(convert("012345678901234", 4));
     }
 }
