@@ -80,18 +80,36 @@ public class Solution {
                 return Integer.MIN_VALUE;
             }
         }
-//        if (num * sign > Integer.MAX_VALUE) {
-//            return Integer.MAX_VALUE;
-//        }
-//        if (num * sign < Integer.MIN_VALUE) {
-//            return Integer.MIN_VALUE;
-//        }
         return (int) (num * sign);
     }
     
+    public static boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        int digits = (int) Math.log10(x) + 1;
+        if (x % 10 != (int)(x / Math.pow(10, digits - 1))) {
+            return false;
+        }
+        // remove the first and last digit 
+        // avoid overflow
+        x = (int)(x / 10); // 10002
+//        x = (int) (x % Math.pow(10, digits - 1) / 10);
+        int temp = x;
+        int num = 0;
+        while (temp >= 10) {
+            num = num * 10 + temp % 10;
+            temp = temp / 10;
+        }
+        x = (int) (x % Math.pow(10, digits - 2));
+        System.out.println(x);
+        System.out.println(num);
+        return num == x;
+    }
     
     public static void main(String[] args) {
 //        System.out.println(reverse(1534236469));
-        System.out.println(myAtoi("9223372036854775809"));
+//        System.out.println(myAtoi("9223372036854775809"));
+        System.out.println(isPalindrome(10001));
     }
 }
