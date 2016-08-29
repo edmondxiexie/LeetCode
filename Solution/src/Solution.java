@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class Solution {
     public static String convert(String s, int numRows) {
         // 首行和尾行相邻两个元素之间的距离是2*(numRows - 1)
@@ -107,9 +109,49 @@ public class Solution {
         return num == x;
     }
     
+    public static boolean isValid(String s) {
+        if (s == null || s.length() <= 1) {
+            return false;
+        }
+        Stack<Character> myStack = new Stack<Character>();
+        for (int index = 0; index < s.length(); index++) {
+            if (s.charAt(index) == '(' || s.charAt(index) == '[' 
+                    || s.charAt(index) == '{') {
+                myStack.push(s.charAt(index));
+            } else {
+                // if stack is already empty
+                if (myStack.isEmpty()) {
+                    return false;
+                }
+                if (s.charAt(index) == ')') {
+                    if (myStack.pop() != '(') {
+                        return false;
+                    }
+                }
+                else if (s.charAt(index) == ']') {
+                    if (myStack.pop() != '[') {
+                        return false;
+                    }
+                }
+                else if (s.charAt(index) == '}') {
+                    if (myStack.pop() != '{') {
+                        return false;
+                    }
+                }
+            }
+           
+        }
+        if (myStack.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public static void main(String[] args) {
+        System.out.println(isValid("()]"));
 //        System.out.println(reverse(1534236469));
 //        System.out.println(myAtoi("9223372036854775809"));
-        System.out.println(isPalindrome(10001));
+//        System.out.println(isPalindrome(10001));
     }
 }
