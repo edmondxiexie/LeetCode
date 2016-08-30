@@ -148,8 +148,39 @@ public class Solution {
         }
     }
     
+    public static int maxArea(int[] height) {
+        if (height == null || height.length <= 1) {
+            return 0;
+        }
+        int left = 0;
+        int right = height.length - 1;
+        int max_area = 0;
+        int cur_area = 0;
+        while (left < right) {
+            // everytime move the short one
+            // the short one is crucial
+            if (height[left] <= height[right]) {
+                cur_area = (right - left) * height[left];
+                if (cur_area > max_area) {
+                    max_area = cur_area;
+                }
+                left++;
+            } 
+            else {
+                cur_area = (right - left) * height[right];
+                if (cur_area > max_area) {
+                    max_area = cur_area;
+                }
+                right--;
+            }
+        }
+        return max_area;
+    }
+    
     public static void main(String[] args) {
-        System.out.println(isValid("()]"));
+        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
+        System.out.println(maxArea(height));
+//        System.out.println(isValid("()]"));
 //        System.out.println(reverse(1534236469));
 //        System.out.println(myAtoi("9223372036854775809"));
 //        System.out.println(isPalindrome(10001));
