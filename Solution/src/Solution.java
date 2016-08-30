@@ -204,13 +204,35 @@ public class Solution {
         } else {
             lastNode.next = l2;
         }
-        return dummy.next;
-         
+        return dummy.next; 
+    }
+    
+    public static String intToRoman(int num) {
+        // I = 1
+        // V = 5
+        // X = 10
+        // L = 50
+        // C = 100
+        // D = 500
+        // M = 1000
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", 
+                            "XL", "X", "IX", "V", "IV", "I"};
+        int[] Values = {1000, 900, 500, 400, 100, 90, 50,
+                        40, 10, 9, 5, 4, 1};
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; num > 0; i++) {
+            while (num >= Values[i]) {
+                result.append(symbols[i]);
+                num -= Values[i];
+            }
+        }
+        return result.toString();
     }
     
     public static void main(String[] args) {
-        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
-        System.out.println(maxArea(height));
+//        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
+        System.out.println(intToRoman(78));
+//        System.out.println(maxArea(height));
 //        System.out.println(isValid("()]"));
 //        System.out.println(reverse(1534236469));
 //        System.out.println(myAtoi("9223372036854775809"));
