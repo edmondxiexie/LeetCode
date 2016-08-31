@@ -336,9 +336,40 @@ public class Solution {
         return true;
     }
     
+    public static String convert(String num) {
+        int slow = 0;
+        int fast = 0;
+        String result = "";
+        while (fast < num.length()) {
+            while (fast != num.length() 
+                    && num.charAt(fast) == num.charAt(slow)) {
+                fast++;
+            }
+            result += Integer.toString(fast - slow) + num.charAt(slow);
+            slow = fast;
+        }
+        return result;
+    }
+    
+    public static String countAndSay(int n) {
+        String last = "1";
+        while (n > 0) {
+            String cur = convert(last);
+            last = cur;
+            n--;
+        }
+        return last;
+    }
+    
     public static void main(String[] args) {
+        System.out.println(countAndSay(4));
+//        String S0 = "we promptly judged antique ivory buckles for the next prize";
+//        String S1 = "we promptly judged antique ivory buckles for the prize";
+//        String S2 = "qwertyuiopasdfghjklzxcvbnm";
+//        String[] s = {S0, S1, S2};
+//        System.out.println(isPangram(s));
 //        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
-        System.out.println(strStr("world", "d"));
+//        System.out.println(strStr("world", "d"));
 //        System.out.println(intToRoman(78));
 //        System.out.println(maxArea(height));
 //        System.out.println(isValid("()]"));
