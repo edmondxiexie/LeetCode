@@ -253,9 +253,22 @@ public class Solution {
         return dummy.next;
     }
     
+    public static int strStr(String haystack, String needle) {
+        if (haystack == null || haystack.length() < needle.length()) {
+            return -1;
+        }
+        for (int i = 0; i < haystack.length() - needle.length() + 1; i++) {
+            if (haystack.startsWith(needle, i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     public static void main(String[] args) {
 //        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
-        System.out.println(intToRoman(78));
+        System.out.println(strStr("world", "d"));
+//        System.out.println(intToRoman(78));
 //        System.out.println(maxArea(height));
 //        System.out.println(isValid("()]"));
 //        System.out.println(reverse(1534236469));
