@@ -229,6 +229,30 @@ public class Solution {
         return result.toString();
     }
     
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head; 
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode former = dummy;
+        ListNode cur = head;
+////        ListNode later = head.next;
+//        ListNode temp;
+//        dummy = former.next;
+//        former.next = former.next.next;
+//        dummy.next = former;
+        
+        while (cur.next != null) {
+            former.next = former.next.next;
+            cur.next = former.next.next;
+            former.next = cur;
+            cur = cur.next;
+            former = former.next.next;
+        }
+        return dummy.next;
+    }
+    
     public static void main(String[] args) {
 //        int[] height = new int[]{1, 1, 3, 8, 6, 7, 3};
         System.out.println(intToRoman(78));
