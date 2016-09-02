@@ -1,6 +1,11 @@
 import java.util.HashSet;
 import java.util.Stack;
 
+/**
+ * @author Edmond
+ *
+ */
+
 public class Solution {
     public static String convert(String s, int numRows) {
         // 首行和尾行相邻两个元素之间的距离是2*(numRows - 1)
@@ -361,8 +366,149 @@ public class Solution {
         return last;
     }
     
+    public int lengthOfLastWord(String s) {
+        if (s == null) return 0;
+        String[] parts = s.split(" ");
+        if (parts.length == 0) return 0;
+        return parts[parts.length - 1].length();
+    }
+    
+    // 66. Plus One
+    public static int[] plusOne(int[] digits) {
+        int bits = digits.length;
+        int flag = 1;
+        
+        int i =  bits - 1;
+        while (flag == 1 && i >= 0) {
+            digits[i]++;
+            if (digits[i] == 10) {
+                digits[i] = 0;
+            } else {
+                flag = 0;
+            }
+            i--;
+        }
+        
+        // in case we need one more bits
+        if (flag == 1) {
+            int[] newDigits = new int[(bits + 1)];
+            newDigits[0] = 1;
+            for (int index = 0; index < bits; index++) {
+                newDigits[index + 1] = digits[index];
+            }
+            return newDigits;
+        } else {            
+            return digits;
+        }  
+    }
+    
+    // 67. Add Binary
+    public static String addBinary(String a, String b) {
+        
+        char[] longer;
+        char[] shorter;
+        if (a.length() > b.length()) {
+            longer = a.toCharArray();
+            shorter = b.toCharArray();
+        } else {
+            shorter = a.toCharArray();
+            longer = b.toCharArray();            
+        }
+        int carry = 0;
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < shorter.length; i++) {
+            if (carry == 0) {
+                
+                // 1 + 1
+                if (longer[longer.length - i - 1] == '1'
+                        && shorter[shorter.length - i - 1] == '1') {
+                    carry = 1;
+                    result.append("0");
+                } 
+                
+                // 0 + 0
+                else if (longer[longer.length - i - 1] == '0'
+                        && shorter[shorter.length - i - 1] == '0') {
+                    result.append("0");
+                }
+                
+                // 1 + 0 or 0 + 1
+                else {
+                    result.append("1");
+                }
+            } 
+            
+            // carry == 1
+            else {
+
+                // 1 + 1
+                if (longer[longer.length - i - 1] == '1'
+                        && shorter[shorter.length - i - 1] == '1') {
+                    carry = 1;
+                    result.append("1");
+                } 
+                
+                // 0 + 0
+                else if (longer[longer.length - i - 1] == '0'
+                        && shorter[shorter.length - i - 1] == '0') {
+                    result.append("1");
+                    carry = 0;
+                }
+                
+                // 1 + 0 or 0 + 1
+                else {
+                    result.append("0");
+                    carry = 1;
+                }
+            }
+        }
+        
+        // longer
+        for (int i = 0; i < (longer.length - shorter.length); i++) {
+            
+            // carry == 0
+            if (carry == 0) {
+                
+                // 1
+                if (longer[longer.length - shorter.length - i - 1] == '1') {
+                    result.append("1");
+                } 
+                
+                // 0
+                else if (longer[longer.length - shorter.length - i - 1] == '0') {
+                    result.append("0");
+                }
+            } 
+            
+            // carry == 1
+            else {
+                // 1
+                if (longer[longer.length - shorter.length - i - 1] == '1') {
+                    carry = 1;
+                    result.append("0");
+                } 
+                
+                // 0
+                else if (longer[longer.length - shorter.length - i - 1] == '0') {
+                    result.append("1");
+                    carry = 0;
+                }
+            }
+        }
+        
+        // one more bit 
+        if (carry == 1) {
+            result.append("1");
+        }
+        return result.reverse().toString();
+    }
+    
+    
     public static void main(String[] args) {
-        System.out.println(countAndSay(4));
+        System.out.println(addBinary("111", "1"));
+        int[] s = {9, 9, 9};
+        plusOne(s);
+//        System.out.println(countAndSay(4));
 //        String S0 = "we promptly judged antique ivory buckles for the next prize";
 //        String S1 = "we promptly judged antique ivory buckles for the prize";
 //        String S2 = "qwertyuiopasdfghjklzxcvbnm";
