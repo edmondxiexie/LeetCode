@@ -380,6 +380,33 @@ public class Solution {
         return result;
     }
     
+    // 110. Balanced Binary Tree
+    public int getDepth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        else if (node.left == null && node.right == null) {
+            return 1;
+        }
+        else {
+            int left = getDepth(node.left);
+            int right = getDepth(node.right);
+            return 1 + (left > right ? left : right);
+        }
+    }
+     
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        int left = getDepth(root.left);
+        int right = getDepth(root.right);
+        if (left - right > 1 || right - left > 1) {
+            return false;
+        } else {
+            return isBalanced(root.left) && isBalanced(root.right);
+        }
+    }
     
     public static void main(String[] args) {
 //        int[] nums = {6, 5, 2, 4, 3, 1};
