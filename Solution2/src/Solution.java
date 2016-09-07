@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,19 +165,220 @@ public class Solution {
         return result;
     }
     
+    static String electionWinner(String[] votes) {
+        if (votes.length == 1) {
+            return votes[0];
+        }
+        int max = 0;
+        ArrayList<String> names = new ArrayList<String>();
+        Map<String, Integer> voteTable = new HashMap<String, Integer>();
+        for (String name : votes) {
+            if (voteTable.containsKey(name)) {
+                voteTable.put(name, voteTable.get(name) + 1);
+            } else {
+                voteTable.put(name, 1);
+            }
+            if (voteTable.get(name) > max) {
+                max = voteTable.get(name);
+            }
+        }
+        for (String name : voteTable.keySet()) {
+            if (voteTable.get(name) == max) {
+                names.add(name);
+            }
+        }
+        Collections.sort(names);
+        return names.get(names.size() - 1);
+    }
+    
+    // 22. Generate Parentheses
+    public static List<String> generateParenthesis(int n) {
+        ArrayList<String> result = new ArrayList<String>();
+        String str = new String();
+        if (n < 0) return result;
+        tryParenthesis(result, str, n, n);
+        return result;
+        
+    }
+    
+    public static void tryParenthesis(List<String> result, String str, int left, int right) {
+        if (left > right) {
+            return;
+        }
+        if (left == 0 && right == 0) {
+            result.add(new String(str));
+            return;
+        }
+        if (left > 0) {
+            tryParenthesis(result, str + "(", left - 1, right);
+        }
+        if (right > 0) {
+            tryParenthesis(result, str + ")", left, right - 1);
+
+        }        
+    }
+    
+    // 29. Divide Two Integers
+    public static int divide(int dividend, int divisor) {
+        if (divisor == 1) return dividend;
+        if ((dividend == Integer.MIN_VALUE && divisor == -1) || divisor == 0) {
+            return Integer.MAX_VALUE;
+        }
+        
+        int sign = 1;
+        if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) {
+            sign = -1;
+        }
+        long dvd = Math.abs((long)dividend);
+        long dvs = Math.abs((long)divisor);
+        int power = 31;
+        long dvsPower = dvs << power;
+        long quotient = 0;
+        
+        while (dvd >= dvs) {
+            
+            while (dvsPower > dvd) {
+                dvsPower >>= 1;
+                power--;
+            }
+            dvd -= dvsPower;
+            quotient += (1L << power);
+            
+        }
+        if (sign < 0) {
+            return (int) (0 - quotient);
+        } else {
+            return (int) quotient;
+        }
+    }
+
+    // 31. Next Permutation
+    public static void nextPermutation(int[] nums) {
+        // array print use Arrays.toString(nums)
+        // {6, 5, 2, 4, 3, 1} 从后向前找，找到第一个不是降序的元素，这里是2，pivot
+        // 从末尾到pivot之间，从后向前找第一个比2大的数，这里是3
+        // 交换2和3，pivot之后顺序排列
+        
+        if (nums.length <= 1) 
+            return;
+        boolean changed = false;
+        int pivot = nums.length - 2;
+        while (pivot >= 0) {
+            if (nums[pivot] < nums[pivot + 1]) {
+                changed = true;
+                break;
+            }
+            pivot--;
+        }
+        
+        if (changed == false) {
+            Arrays.sort(nums);
+            return;
+        }
+        
+        System.out.println(pivot);
+        for (int i = nums.length - 1; i > pivot; i--) {
+            if (nums[i] > nums[pivot]) {
+                int temp = nums[pivot];
+                nums[pivot] = nums[i];
+                nums[i] = temp;
+                System.out.println(66666);
+
+                break;
+            }
+        }
+        Arrays.sort(nums, pivot + 1, nums.length);
+    }
+    
+    // 102. Binary Tree Level Order Traversal
+    
+    public void getOrder(List<List<Integer>> result, 
+                         List<Integer> subRes,
+                         TreeNode root) {
+        
+    }
+    
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<Integer>();
+            // necessary step
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode head = queue.poll();
+                level.add(head.val);
+                if (head.left != null) {
+                    queue.offer(head.left);
+                }
+                if (head.right != null) {
+                    queue.offer(head.right);
+                }
+            }
+            result.add(level);
+        }
+        return result;    
+    }
+    
+    // 104. Maximum Depth of Binary Tree
+    public int maxDepth(TreeNode root) {
+        int depth = 0;
+        if (root == null) {
+            return depth;
+        }
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<Integer>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode head = queue.poll();
+                level.add(head.val);
+                if (head.left != null) {
+                    queue.offer(head.left);
+                }
+                if (head.right != null) {
+                    queue.offer(head.right);
+                }
+            }
+            if (level.size() > 0) {
+                depth++;
+            }
+        }      
+        return depth;
+    }
+    
     public static void main(String[] args) {
-        int[] nums = {-13,5,13,12,-2,-11,-1,12,-3,0,-3,-7,-7,-5,-3,-15,-2,14,14,13,6,-11,-11,5,-15,-14,5,-5,-2,0,3,-8,-10,-7,11,-5,-10,-5,-7,-6,2,5,3,2,7,7,3,-10,-2,2,-12,-11,-1,14,10,-9,-15,-8,-7,-9,7,3,-2,5,11,-13,-15,8,-3,-7,-12,7,5,-2,-6,-3,-10,4,2,-5,14,-3,-1,-10,-3,-14,-4,-3,-7,-4,3,8,14,9,-2,10,11,-10,-4,-15,-9,-1,-1,3,4,1,8,1};
-        System.out.println(letterCombinations("233"));
+//        int[] nums = {6, 5, 2, 4, 3, 1};
+        int[] nums = {1, 1};
+        int n = 10;
+        for (int i = 0; i < n; i++) {
+            System.out.println(i);
+            n--;
+        }
+//        nextPermutation(nums);
+//        System.out.println(Arrays.toString(nums));
+//        System.out.println(divide(102, 2));
+//        int[] nums = {-13,5,13,12,-2,-11,-1,12,-3,0,-3,-7,-7,-5,-3,-15,-2,14,14,13,6,-11,-11,5,-15,-14,5,-5,-2,0,3,-8,-10,-7,11,-5,-10,-5,-7,-6,2,5,3,2,7,7,3,-10,-2,2,-12,-11,-1,14,10,-9,-15,-8,-7,-9,7,3,-2,5,11,-13,-15,8,-3,-7,-12,7,5,-2,-6,-3,-10,4,2,-5,14,-3,-1,-10,-3,-14,-4,-3,-7,-4,3,8,14,9,-2,10,11,-10,-4,-15,-9,-1,-1,3,4,1,8,1};
+//        System.out.println(letterCombinations("233"));
+        String[] votes = {"a", "b", "c", "a"};
+//        System.out.println(generateParenthesis(3));
+//        System.out.println(electionWinner(votes));
         //        System.out.println(twoSum(nums, 5, 0).size());
 //        System.out.println(twoSum(nums, 0, 0).toString());
 //        System.out.println(threeSum(nums));
 //        newNums.add(Arrays.copyOfRange(nums, 0, 2));
 //        System.out.println(Arrays.toString(newNums));
         // TODO Auto-generated method stub
-        System.out.println(climbStairs(1));
-        System.out.println(climbStairs(2));
-        System.out.println(climbStairs(3));
-        System.out.println(climbStairs(4));
+//        System.out.println(climbStairs(1));
+//        System.out.println(climbStairs(2));
+//        System.out.println(climbStairs(3));
+//        System.out.println(climbStairs(4));
     }
 
 }
