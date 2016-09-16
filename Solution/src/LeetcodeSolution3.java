@@ -1,6 +1,7 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
-public class Solution3 {
+public class LeetcodeSolution3 {
     
     // 119. Pascal's Triangle II
     public int getVal (int row, int col) {
@@ -244,6 +245,218 @@ public class Solution3 {
         return count;
     }
 
+    // 190. Reverse Bits
+    public int reverseBits(int n) {
+        int mask = 1;
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            int lastBit = n & mask;
+            result = result << 1 | lastBit;
+            n = n >> 1;
+        }
+        return result;
+    }
+
+    // 34. Search for a Range
+    public static int[] binarySearchRange(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+        int[] result = new int[3];
+
+        while(high >= low) {
+            int middle = (low + high) / 2;
+            if(nums[middle] == target) {
+                result[0] = low;
+                result[1] = middle;
+                result[2] = high;
+                return result;
+            }
+            if(nums[middle] < target) {
+                low = middle + 1;
+            }
+            if(nums[middle] > target) {
+                high = middle - 1;
+            }
+        }
+        return null;
+    }
+
+    // [1, 2, 3, 4, 4, 4, 4]
+    // OR [4, 4, 4, 4, 5, 6, 7, 8]
+    public static int BinaryFindEnds(int[] nums, int target, int low, int high, boolean first) {
+        if (first) {
+            int min = high;
+            while (high >= low) {
+                int middle = (low + high) / 2;
+                if (nums[middle] == target) {
+                    min = middle;
+                    high = middle - 1;
+                } else if (nums[middle] < target) {
+                    low = middle + 1;
+                }
+            }
+            return min;
+        } else {
+            int max = low;
+            while (high >= low) {
+                int middle = (low + high) / 2;
+                if (nums[middle] == target) {
+                    max = middle;
+                    low = middle + 1;
+                } else if (nums[middle] > target) {
+                    high = middle - 1;
+                }
+            }
+            return max;
+        }
+    }
+
+    public static int[] searchRange(int[] nums, int target) {
+        int[] pos = new int[3];
+        pos = binarySearchRange(nums, target);
+        int[] result = new int[2];
+        if (pos != null) {
+            result[0] = BinaryFindEnds(nums, target, pos[0], pos[1], true);
+            result[1] = BinaryFindEnds(nums, target, pos[1], pos[2], false);
+        } else {
+            result[0] = -1;
+            result[1] = -1;
+        }
+        return result;
+    }
+
+    // 35. Search Insert Position
+    public static int searchInsert(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+        int middle = (low + high) / 2;
+
+
+        while(high >= low) {
+            middle = (low + high) / 2;
+            if(nums[middle] == target) {
+                return middle;
+            }
+            if(nums[middle] < target) {
+                low = middle + 1;
+            }
+            if(nums[middle] > target) {
+                high = middle - 1;
+            }
+        }
+        if (nums[middle] < target) {
+            return middle + 1;
+        }
+        return middle;
+    }
+
+    // 39. Combination Sum
+    private void solve(List<List<Integer>> res, int currentIndex, int count, List<Integer> tmp,
+                       int[] candidates, int target){
+        if (count >= target) {
+            if(count == target)
+                res.add(new LinkedList<>(tmp));
+            return;
+        }
+
+        for (int i = currentIndex; i < candidates.length; i++){
+            if (count + candidates[i] > target) {
+                break;
+            }
+            tmp.add(candidates[i]);
+            solve(res, i, count + candidates[i], tmp, candidates, target);
+            tmp.remove(tmp.size() - 1);
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        List<Integer> tmp = new LinkedList<>();
+        Arrays.sort(candidates);
+
+        solve(res, 0, 0, tmp, candidates, target);
+        return res;
+    }
+
+    // 40. Combination Sum II
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        List<Integer> tmp = new LinkedList<>();
+
+        Set<Integer> set = new HashSet<Integer>();
+        for (int num : candidates) {
+            set.add(num);
+        }
+        candidates = new int[set.size()];
+        int index = 0;
+        for (int num : set) {
+            candidates[index] = num;
+            index++;
+        }
+        Arrays.sort(candidates);
+
+        solve(res, 0, 0, tmp, candidates, target);
+        return res;
+    }
+
+    // 43. Multiply Strings
+    public static String multiply(String num1, String num2) {
+        // http://www.cnblogs.com/springfor/p/3889706.html
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        num1 = new StringBuilder(num1).reverse().toString();
+        num2 = new StringBuilder(num2).reverse().toString();
+        int[] ints = new int[num1.length() + num2.length()];
+        for (int i = 0; i < num1.length(); i++) {
+            int a = num1.charAt(i) - '0';
+            for (int j = 0; j < num2.length(); j++) {
+                int b = num2.charAt(j) - '0';
+                ints[i + j] += a * b;
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+        int carry = 0;
+        for (int index = 0; index < ints.length; index++) {
+            int remainder = ints[index] % 10;
+            carry = ints[index] / 10;
+
+            result.append(remainder);
+            if (index + 1 < ints.length) {
+                ints[index + 1] += carry;
+            }
+        }
+
+        // reverse
+        result = result.reverse();
+
+        // delete heading '0'
+        while (result.length() > 0 && result.charAt(0) == '0') {
+            result.deleteCharAt(0);
+        }
+        return result.toString();
+    }
+
+    // 46. Permutations
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+
+        return result;
+
+
+    }
+
+    public static void divide(int a, int b) {
+        try {
+            int c = a / b;
+        } catch (Exception e) {
+            System.out.print("Exception ");
+        } finally {
+            System.out.println("Finally");
+        }
+    }
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
 //        System.out.println(155117520);
@@ -258,7 +471,17 @@ public class Solution3 {
 //        System.out.println("1.5".contains("."));
 //
 //        System.out.println(convertToTitle(52));
-        System.out.println(trailingZeroes(25));
+//        System.out.println(trailingZeroes(25));
+//        int[] nums = {1, 3, 4};
+//        System.out.println(Arrays.toString(searchRange(nums, 9)));
+//        System.out.println(searchInsert(nums, 5));
+//        searchRange(nums, 9);
+//        divide(4, 0);
+//        String s1=new String("Hello");
+//        String s2=new String("there");
+//        String s3=new String();
+//        s3 = s1 + s2;
+        System.out.println(multiply("52", "60"));
 
     }
 

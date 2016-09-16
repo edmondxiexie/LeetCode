@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class Solution2 {
+public class LeetcodeSolution2 {
     
     // 70. Climbing Stairs
     // 此题其实是一个动态规划问题，其本质是一个菲波那切数列。
