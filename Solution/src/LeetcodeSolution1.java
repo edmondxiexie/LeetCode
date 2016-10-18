@@ -6,7 +6,7 @@ import java.util.Stack;
  *
  */
 
-public class LeetcodeSolution {
+public class LeetcodeSolution1 {
     public static String convert(String s, int numRows) {
         // 首行和尾行相邻两个元素之间的距离是2*(numRows - 1)
         // 首行和尾行之间的其他行除了像首位两行一样有间隔距离2*(numRows - 1)的元素，
